@@ -1,0 +1,14 @@
+import requests
+
+try:
+    ort = input("Stadt: ")
+
+    url = (f"https://wttr.in/{ort}?format=j1")
+    data = requests.get(url).json()
+
+    for key, value in data["current_condition"][0].items():
+        if key == "temp_C":
+            print(f"Temperatur in {ort}: {value}°C")
+
+except:
+    print("Dieser Ort existiert nicht.")
