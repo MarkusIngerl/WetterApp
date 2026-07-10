@@ -1,14 +1,21 @@
 import requests
 
-try:
-    ort = input("Stadt: ")
+class WeatherApp:
+    def __init__(self, ort):
+        self.ort = ort
+        self.url = f"https://wttr.in/{self.ort}?format=j1"
+        try:
+            self.data = requests.get(self.url).json()
+        except:
+            self.data = None
 
-    url = (f"https://wttr.in/{ort}?format=j1")
-    data = requests.get(url).json()
+    def temperature(self):
+        if self.data == None:
+            print("Dieser Ort existiert nicht.")
+        else:
+            for key, value in self.data["current_condition"][0].items():
+                if key == "temp_C":
+                    print(f"Temperatur in {self.ort}: {value}°C")
 
-    for key, value in data["current_condition"][0].items():
-        if key == "temp_C":
-            print(f"Temperatur in {ort}: {value}°C")
-
-except:
-    print("Dieser Ort existiert nicht.")
+weather = WeatherApp(input("Ort: "))
+weather.temperature()
