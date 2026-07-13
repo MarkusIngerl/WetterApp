@@ -15,7 +15,11 @@ class WeatherApp:
         else:
             for key, value in self.data["current_condition"][0].items():
                 if key == "temp_C":
-                    print(f"Temperatur in {self.ort}: {value}°C")
+                    temperature = value
+                if key == "observation_time":
+                    time = value
+            print(f"Temperatur in {self.ort} um {time}: {temperature}°C")
+
 
 weather = WeatherApp(input("Ort: "))
-weather.temperature()
+weather.temperature()# print(data["current_condition"][0])
