@@ -20,6 +20,15 @@ class WeatherApp:
                     time = value
             print(f"Temperatur in {self.ort} um {time}: {temperature}°C")
 
+    def forecast(self):
+        if self.data == None:
+            print("Dieser Ort existiert nicht.")
+        else:
+            for key, value in self.data["weather"][1].items():
+                if key == "maxtempC":
+                    tomorrowTemp = value
+            print(f"Temperatur morgen: {tomorrowTemp}°C")
 
 weather = WeatherApp(input("Ort: "))
-weather.temperature()# print(data["current_condition"][0])
+weather.temperature()
+weather.forecast()
