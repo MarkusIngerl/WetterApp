@@ -1,34 +1,32 @@
 import requests
 
 class WeatherApp:
-    def __init__(self, ort):
-        self.ort = ort
-        self.url = f"https://wttr.in/{self.ort}?format=j1"
+    def __init__(self, town):
+        self.town = town
+        self.url = f"https://wttr.in/{self.town}?format=j1"
         try:
             self.data = requests.get(self.url).json()
         except:
             self.data = None
+            print(f"{self.town} isn't existing!")
 
     def temperature(self):
         if self.data == None:
-            print("Dieser Ort existiert nicht.")
+            print("-")
         else:
-            for key, value in self.data["current_condition"][0].items():
-                if key == "temp_C":
-                    temperature = value
-                if key == "observation_time":
-                    time = value
-            print(f"Temperatur in {self.ort} um {time}: {temperature}°C")
+            current = self.data["current_condition"][0]
+            temperature = current["temp_C"]
+            time = current["observation_time"]
+            print(f"Temperature in {self.town} at {time}: {temperature}°C")
 
     def forecast(self):
         if self.data == None:
-            print("Dieser Ort existiert nicht.")
+            print("-")
         else:
-            for key, value in self.data["weather"][1].items():
-                if key == "maxtempC":
-                    tomorrowTemp = value
-            print(f"Temperatur morgen: {tomorrowTemp}°C")
+            tomorrow = self.data["weather"][1]
+            tomorrowTemp = tomorrow["maxtempC"]
+            print(f"Temperature tomorrow: {tomorrowTemp}°C")
 
-weather = WeatherApp(input("Ort: "))
+weather = WeatherApp(input("Town: "))
 weather.temperature()
 weather.forecast()
