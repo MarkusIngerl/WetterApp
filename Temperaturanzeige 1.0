@@ -1,31 +1,30 @@
+import requests
+
+class WeatherApp:
+    def __init__(self, town):
+        self.town = town
+        self.url = f"https://wttr.in/{self.town}?format=j1"
+        try:
+            self.data = requests.get(self.url).json()
+        except:
+            self.data = None
+            raise ValueError(f"{self.town} isn't existing!")
+
+    def get_temperature(self):
+        current = self.data["current_condition"][0]
+        temperature = current["temp_C"]
+        time = current["observation_time"]
+        return temperature, time
+
+    def get_forecast(self):
+        tomorrow = self.data["weather"][1]
+        tomorrowTemp = tomorrow["maxtempC"]
+        return tomorrowTemp
+
 while True:
-    import requests
-
-    class WeatherApp:
-        def __init__(self, town):
-            self.town = town
-            self.temperature = None
-            self.time= None
-            self.tomorrowTemp = None
-            self.url = f"https://wttr.in/{self.town}?format=j1"
-            try:
-                self.data = requests.get(self.url).json()
-            except:
-                self.data = None
-                raise ValueError(f"{self.town} isn't existing!")
-
-        def temperatureNow(self):
-            current = self.data["current_condition"][0]
-            self.temperature = current["temp_C"]
-            self.time = current["observation_time"]
-
-        def forecast(self):
-            tomorrow = self.data["weather"][1]
-            self.tomorrowTemp = tomorrow["maxtempC"]
-
     weather = WeatherApp(input("Town: "))
-    weather.temperatureNow()
-    weather.forecast()
+    temperature, time = weather.get_temperature()
+    tomorrowTemp = weather.get_forecast()
 
-    print(f"Temperature in {weather.town} at {weather.time}: {weather.temperature}°C")
-    print(f"Temperature tomorrow: {weather.tomorrowTemp}°C")
+    print(f"Temperature in {weather.town} at {time}: {temperature}°C")
+    print(f"Temperature tomorrow: {tomorrowTemp}°C")
